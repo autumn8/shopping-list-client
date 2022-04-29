@@ -1,43 +1,35 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, onValue} from "firebase/database";
+import firebaseConfig from "./firebase.config";
+import { useState, useEffect } from 'react';
+import GroceryListItem from "./components/GroceryListItem/GroceryListItem";
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const app = initializeApp(firebaseConfig);
+const db = getDatabase();
+
+function App() {  
+  const [groceryList, setGroceryList] = useState([]);  
+
+  useEffect(() => {
+    const items = ref(db, 'items/');
+    onValue(items, (snapshot) => {
+      const data = snapshot.val();      
+      setGroceryList(Object.values(data));
+    });
+  }, [setGroceryList]);
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+     <ul className="shopping-list__wrapper">
+          {groceryList
+            .map((name, index) => {
+              return <GroceryListItem key={index} name={name}/>;
+            })            
+          }
+        </ul>
+
+        <button onClick="updateList">Update</button>
     </div>
   )
 }
