@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 
-function GroceryListItem({name}) {
-    const [isSelected, setIsSelected] = useState(false);
+function GroceryListItem({id, value, isCancelled, onUpdate}) {
+    
 
-    function handleSelectChange() {
-        setIsSelected(!isSelected);
+    function onClick() {        
+        onUpdate(id);
     }
 
     return (
-        <li onClick={handleSelectChange} className={isSelected ? 'shopping-list__item text-strike' : 'shopping-list__item'}>
-            {name}
+        <li onClick={onClick} className={isCancelled ? 'shopping-list__item text-strike': 'shopping-list__item'  }>
+            {value.name}           
             {/* <input
                   name="isSelected"
                   type="checkbox"

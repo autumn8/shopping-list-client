@@ -1,3 +1,15 @@
+html {
+  box-sizing: border-box;
+}
+
+.completed-btn {
+  text-align: center;
+  padding: 30px;
+  border-radius: 5px;
+  background-color: burlywood;
+  margin: 20px;
+}
+
 .shopping-list__wrapper {
   text-decoration: none;
   list-style-type: none;
